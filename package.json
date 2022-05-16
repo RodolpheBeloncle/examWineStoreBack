@@ -1,0 +1,32 @@
+{
+  "name": "wine-cellar",
+  "version": "1.0.0",
+  "description": "wine-management",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.28.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.2.0",
+    "file-system": "^2.2.2",
+    "gridfs-stream": "^1.1.1",
+    "joi": "^17.5.0",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.2",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
+    "nodemon": "^2.0.12",
+    "validator": "^13.1.17"
+  }
+}
