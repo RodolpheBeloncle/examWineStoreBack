@@ -56,46 +56,19 @@ module.exports.updateWine = async (req, res) => {
       message: 'Data to update can not be empty!',
     });
   }
-
   const id = req.params.id;
-  PostModel.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
-      image: req.file.path,
-    },
-    { new: true, useFindAndModify: false }
-  )
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`,
-        });
-      } else res.status(200).send({ message: data });
+
+  PostModel.updateOne({ _id: id }, req.body)
+    .then(() => {
+      res.status(201).json({
+        message: 'Wine updated successfully!',
+      });
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: 'Error updating Tutorial with id=' + id,
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
       });
     });
-  // const { value: updateWine, error } = uploadSchemaWine.validate(req.body);
-  // if (error) {
-  //   return res.status(400).json(error);
-  // }
-
-  // try {
-  //   const updatedPost = await PostModel.findOneAndUpdate(
-  //     { _id: req.params.id },
-  //     {
-  //       ...updateWine,
-  //       image: req.file.path,
-  //     },
-  //     { new: true }
-  //   );
-  //   return res.status(200).json({ response: updatedPost });
-  // } catch {
-  //   res.status(404).json({ error: "Post doesn't exist!" });
-  // }
 };
 
 module.exports.deletePost = (req, res) => {

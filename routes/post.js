@@ -27,7 +27,7 @@ router.delete('/:id', postController.deletePost);
 router.post('/selectedwines', postController.multipleDeletePost);
 
 // UPDATE WINE Properties
-router.post(
+router.put(
   '/updateselectedwine/:id',
   upload.single('image'),
   postController.updateWine
