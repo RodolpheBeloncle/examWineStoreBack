@@ -11,7 +11,6 @@ module.exports.getStoreCollections = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err });
   }
-
 };
 
 module.exports.getWineStore = async (req, res) => {
@@ -27,7 +26,7 @@ module.exports.updateStore = async (req, res) => {
   try {
     if (!req.body) {
       console.log('is empty');
-      res.status(500).json({message:"no changes provided !"});
+      res.status(500).json({ message: 'no changes provided !' });
     } else {
       const updatedStore = await StoreModel.findByIdAndUpdate(
         req.params.id,
@@ -38,6 +37,28 @@ module.exports.updateStore = async (req, res) => {
       );
       res.status(200).json(updatedStore);
     }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+module.exports.getWineStore = async (req, res) => {
+  try {
+    const { array2d } = await StoreModel.findById(req.params.id);
+    res.status(200).json(array2d);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+};
+
+module.exports.newStore = async (req, res) => {
+  const createStore = new StoreModel({
+    ...req.body,
+  });
+
+  try {
+    const savedStore = await createStore.save();
+    res.status(200).json(savedStore);
   } catch (err) {
     res.status(500).json(err);
   }

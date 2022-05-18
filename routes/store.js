@@ -19,16 +19,7 @@ router.put('/updatestore/:id', storeController.updateStore);
 
 //CREATE STORE
 
-// router.post("/", verifyToken, async (req, res) => {
-//   const newStore = new Store(req.body);
-
-//   try {
-//     const savedStore = await newStore.save();
-//     res.status(200).json(savedStore);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+router.post("/newstore",storeController.newStore);
 
 //DELETE STORE
 // router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
