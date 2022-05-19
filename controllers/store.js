@@ -3,17 +3,39 @@ const StoreModel = require('../models/store');
 const ObjectID = require('mongoose').Types.ObjectId;
 
 module.exports.getStoreCollections = async (req, res) => {
+  const { ids } = req.body;
+
   try {
-    StoreModel.find((err, docs) => {
-      if (!err) res.send(docs);
-      else console.log('Error to get data : ' + err);
-    }).sort({ createdAt: -1 });
+    StoreModel.find(
+      {
+        _id: {
+          $in: [...ids],
+        },
+      },
+      (err, array) => {
+        if (err) {
+          // handle error
+        } else {
+          let objects = {};
+          array.forEach((o) => (objects[o._id] = o));
+          let dupArray = ids.map((id) => objects[id]);
+          // here you have objects with duplicates in dupArray:
+          console.log(dupArray.length);
+          if (dupArray.length === 0) {
+            return res.status(200).json('no store recorded');
+          }
+          return res.status(200).json(dupArray);
+        }
+      }
+    );
   } catch (err) {
     res.status(500).json({ message: err });
   }
 };
 
 module.exports.getWineStore = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id))
+    return res.status(400).json({ message: 'ID unknown : ' + req.params.id });
   try {
     const { array2d } = await StoreModel.findById(req.params.id);
     res.status(200).json(array2d);

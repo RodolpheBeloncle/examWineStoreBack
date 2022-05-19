@@ -9,7 +9,7 @@ const {
 const router = require("express").Router();
 
 // GET ALL WINESTORE COLLECTIONS
-router.get('/', storeController.getStoreCollections);
+router.post('/', storeController.getStoreCollections);
 
 //GET STORE WHERE SELECTED WINE IS STORED
 router.get("/:id", storeController.getWineStore );
