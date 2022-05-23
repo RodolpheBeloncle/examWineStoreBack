@@ -51,21 +51,17 @@ module.exports.createNewWine = async (req, res) => {
 };
 
 module.exports.updateWine = async (req, res) => {
-  
-  console.log(req.body,req.file)
-  if (!req.body) {
-    return res.status(400).send({
-      message: 'Data to update can not be empty!',
-    });
+  const { value: wineRefToUpdate, error } = uploadSchemaWine.validate(req.body);
+
+  if (error) {
+    return res.status(400).json(error);
   }
 
   const id = req.params.id;
 
-  PostModel.updateOne({ _id: id }, {...req.body,image: req.file.path})
-    .then((response) => {
-      res.status(201).json({
-        message: response,
-      });
+  PostModel.updateOne({ _id: id }, { ...wineRefToUpdate })
+    .then(() => {
+      res.status(201).json({response: wineRefToUpdate});
     })
     .catch((error) => {
       res.status(400).json({
