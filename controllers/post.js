@@ -51,17 +51,20 @@ module.exports.createNewWine = async (req, res) => {
 };
 
 module.exports.updateWine = async (req, res) => {
+  
+  console.log(req.body,req.file)
   if (!req.body) {
     return res.status(400).send({
       message: 'Data to update can not be empty!',
     });
   }
+
   const id = req.params.id;
 
-  PostModel.updateOne({ _id: id }, req.body)
-    .then(() => {
+  PostModel.updateOne({ _id: id }, {...req.body,image: req.file.path})
+    .then((response) => {
       res.status(201).json({
-        message: 'Wine updated successfully!',
+        message: response,
       });
     })
     .catch((error) => {

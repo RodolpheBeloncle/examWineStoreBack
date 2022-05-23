@@ -8,7 +8,7 @@ const {
 
 const router = require("express").Router();
 
-// GET ALL WINESTORE COLLECTIONS
+// GET WINESTORE COLLECTIONS
 router.post('/', storeController.getStoreCollections);
 
 //GET STORE WHERE SELECTED WINE IS STORED

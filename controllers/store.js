@@ -14,18 +14,18 @@ module.exports.getStoreCollections = async (req, res) => {
       },
       (err, array) => {
         if (err) {
+          return res.status(500).json({ message: "no related wineStore found" });
           // handle error
-        } else {
-          let objects = {};
-          array.forEach((o) => (objects[o._id] = o));
-          let dupArray = ids.map((id) => objects[id]);
-          // here you have objects with duplicates in dupArray:
-          console.log(dupArray.length);
-          if (dupArray.length === 0) {
-            return res.status(200).json('no store recorded');
-          }
-          return res.status(200).json(dupArray);
         }
+        let objects = {};
+        array.forEach((o) => (objects[o._id] = o));
+        let dupArray = ids.map((id) => objects[id]);
+        // here you have objects with duplicates in dupArray:
+        console.log(dupArray.length);
+        if (dupArray.length === 0) {
+          return res.status(200).json('no related wineStore found');
+        }
+        return res.status(200).json(dupArray);
       }
     );
   } catch (err) {
