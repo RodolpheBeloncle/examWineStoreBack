@@ -1,3 +1,4 @@
+const { nanoid } = require('nanoid');
 const mongoose = require('mongoose');
 
 const storeSchema = new mongoose.Schema(
@@ -8,7 +9,10 @@ const storeSchema = new mongoose.Schema(
       default: [
         [
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -22,7 +26,10 @@ const storeSchema = new mongoose.Schema(
         ],
         [
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -34,45 +41,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
-            estate: '',
-            vintage: '',
-            cuvee: '',
-            stockStatus: 0,
-            typeOfWine: '',
-            image: '',
-            price: '',
-            storeId: [],
-            storeIndex: [],
-          },
-        ],
-        [
-          {
-            id: mongoose.Schema.Types.ObjectId,
-            estate: '',
-            vintage: '',
-            cuvee: '',
-            stockStatus: 0,
-            typeOfWine: '',
-            image: '',
-            price: '',
-            storeId: [],
-            storeIndex: [],
-          },
-          {
-            id: mongoose.Schema.Types.ObjectId,
-            estate: '',
-            vintage: '',
-            cuvee: '',
-            stockStatus: 0,
-            typeOfWine: '',
-            image: '',
-            price: '',
-            storeId: [],
-            storeIndex: [],
-          },
-          {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -86,7 +58,57 @@ const storeSchema = new mongoose.Schema(
         ],
         [
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
+            estate: '',
+            vintage: '',
+            cuvee: '',
+            stockStatus: 0,
+            typeOfWine: '',
+            image: '',
+            price: '',
+            storeId: [],
+            storeIndex: [],
+          },
+          {
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
+            estate: '',
+            vintage: '',
+            cuvee: '',
+            stockStatus: 0,
+            typeOfWine: '',
+            image: '',
+            price: '',
+            storeId: [],
+            storeIndex: [],
+          },
+          {
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
+            estate: '',
+            vintage: '',
+            cuvee: '',
+            stockStatus: 0,
+            typeOfWine: '',
+            image: '',
+            price: '',
+            storeId: [],
+            storeIndex: [],
+          },
+        ],
+        [
+          {
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -99,7 +121,10 @@ const storeSchema = new mongoose.Schema(
           },
 
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -111,7 +136,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -123,7 +151,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -137,7 +168,10 @@ const storeSchema = new mongoose.Schema(
         ],
         [
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -149,7 +183,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -162,7 +199,10 @@ const storeSchema = new mongoose.Schema(
           },
 
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -174,7 +214,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
@@ -186,7 +229,10 @@ const storeSchema = new mongoose.Schema(
             storeIndex: [],
           },
           {
-            id: mongoose.Schema.Types.ObjectId,
+            _id: {
+              type: String,
+              default: nanoid(),
+            },
             estate: '',
             vintage: '',
             cuvee: '',
