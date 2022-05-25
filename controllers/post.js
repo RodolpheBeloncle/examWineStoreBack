@@ -21,13 +21,52 @@ module.exports.getSelectedWine = async (req, res) => {
   }
 };
 
+
+
+module.exports.updateOneImage = async (req, res) => {
+  const selectedId = req.params.id;
+  if (!ObjectID.isValid(selectedId)) {
+    return res.status(400).send('ID unknown : ' + selectedId);
+  }
+ 
+  try {
+    PostModel.findOneAndUpdate(
+      { _id: selectedId },
+      {
+        image: req.file.path,
+      },
+      { new: true, upsert: true }
+    )
+      .then((data) => {
+        if (!data) {
+          return res.status(404).send({
+            message: `Cannot update images . Maybe images was not found!`,
+          });
+        } else res.status(200).send({ message: data });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: 'Error updating pairing img with id',
+        });
+      });
+  } catch (error) {
+    console.log(error);
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+      return res.status(400).json({ message: 'Too many files to upload.' });
+    }
+    return res
+      .status(400)
+      .json({ message: `Error when trying upload many files: ${error}` });
+  }
+};
+
 const uploadSchemaWine = Joi.object({
-  estate: Joi.string(),
-  vintage: Joi.string(),
-  cuvee: Joi.string(),
-  typeOfWine: Joi.string(),
-  price: Joi.string(),
-  stock: Joi.number(),
+  estate: Joi.string().allow(null, ''),
+  vintage: Joi.string().allow(null, ''),
+  cuvee: Joi.string().allow(null, ''),
+  typeOfWine: Joi.string().allow(null, ''),
+  price: Joi.string().allow(null, ''),
+  stock: Joi.number().allow(null, ''),
 });
 
 module.exports.createNewWine = async (req, res) => {
@@ -51,37 +90,23 @@ module.exports.createNewWine = async (req, res) => {
 };
 
 module.exports.updateWine = async (req, res) => {
-  const { value: wineRefToUpdate, error } = uploadSchemaWine.validate(req.body);
+  const { value: wineToUpdate, error } = uploadSchemaWine.validate(req.body);
 
-  const id = req.params.id;
+  const selectedId = req.params.id;
+  if (!ObjectID.isValid(selectedId)) {
+    return res.status(400).send('ID unknown : ' + selectedId);
+  }
 
   try {
-    if (!req.file || !req.file.path) {
-      PostModel.updateOne({ _id: id }, { ...wineRefToUpdate })
-        .then(() => {
-          res.status(201).json({ response: wineRefToUpdate });
-        })
-        .catch((error) => {
-          res.status(400).json({
-            error: error,
-          });
-        });
-    } else {
-      PostModel.updateOne(
-        { _id: id },
-        { ...wineRefToUpdate, image: req.file }
-      )
-        .then(() => {
-          res.status(201).json({ response: wineRefToUpdate });
-        })
-        .catch((error) => {
-          res.status(400).json({
-            error: error,
-          });
-        });
-    }
-  } catch (error) {
-    return res.status(400).json(err);
+    await PostModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        ...wineToUpdate,
+      },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    ).then((response) => res.status(201).json({ message: response }));
+  } catch (err) {
+    return res.status(500).json({ message: err });
   }
 };
 

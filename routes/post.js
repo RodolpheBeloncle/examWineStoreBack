@@ -40,12 +40,16 @@ router.post(
   postController.multipleUpload
 );
 
+// UPDATE WINE IMAGE
+router.post(
+  '/updateimg/:id',
+  upload.single('image'),
+  postController.updateOneImage
+);
+
 // DELETE SELECTED IMAGE
 
-router.post(
-  '/deletepairing/:id',
-  postController.deleteOnePairing
-);
+router.post('/deletepairing/:id', postController.deleteOnePairing);
 
 //INCREASE wine stock
 router.post('/increase/:id', requireAuth, postController.increaseAmount);
