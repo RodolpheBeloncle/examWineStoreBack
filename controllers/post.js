@@ -53,21 +53,36 @@ module.exports.createNewWine = async (req, res) => {
 module.exports.updateWine = async (req, res) => {
   const { value: wineRefToUpdate, error } = uploadSchemaWine.validate(req.body);
 
-  if (error) {
-    return res.status(400).json(error);
-  }
-
   const id = req.params.id;
 
-  PostModel.updateOne({ _id: id }, { ...wineRefToUpdate })
-    .then(() => {
-      res.status(201).json({response: wineRefToUpdate});
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+  try {
+    if (!req.file || !req.file.path) {
+      PostModel.updateOne({ _id: id }, { ...wineRefToUpdate })
+        .then(() => {
+          res.status(201).json({ response: wineRefToUpdate });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
+    } else {
+      PostModel.updateOne(
+        { _id: id },
+        { ...wineRefToUpdate, image: req.file }
+      )
+        .then(() => {
+          res.status(201).json({ response: wineRefToUpdate });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
+    }
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 };
 
 module.exports.deletePost = (req, res) => {
