@@ -10,7 +10,7 @@ const wineSchema = new mongoose.Schema(
     price: { type: String, default: 'NC' },
     stock: { type: Number, default: 0 },
     image: { type: String, default: 'No Provided' },
-    pairing:{ type: Array,default:[] },
+    pairings:{ type: Array,default:[] },
     storeIndex: { type: Array,default: [] },
     storeId: { type: Array,default: [] },
   },

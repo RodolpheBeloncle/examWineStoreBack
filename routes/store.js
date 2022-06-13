@@ -1,25 +1,26 @@
-
 const storeController = require('../controllers/store');
 const {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} = require("../middlewares/auth.middleware");
+} = require('../middlewares/auth.middleware');
 
-const router = require("express").Router();
+const router = require('express').Router();
 
 // GET WINESTORE COLLECTIONS
 router.post('/', storeController.getStoreCollections);
 
+router.get('/storeList', storeController.getAllStores);
+
 //GET STORE WHERE SELECTED WINE IS STORED
-router.get("/:id", storeController.getWineStore );
+router.get('/:id', storeController.getWineStore);
 
 // UPDATE Store Properties
 router.put('/updatestore/:id', storeController.updateStore);
 
 //CREATE STORE
 
-router.post("/newstore",storeController.newStore);
+router.post('/newstore', storeController.newStore);
 
 //DELETE STORE
 // router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
@@ -30,7 +31,6 @@ router.post("/newstore",storeController.newStore);
 //     res.status(500).json(err);
 //   }
 // });
-
 
 // //GET ALL STORE
 

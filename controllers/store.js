@@ -2,6 +2,14 @@ const StoreModel = require('../models/store');
 // const { uploadErrors } = require('../utils/errors.utils');
 const ObjectID = require('mongoose').Types.ObjectId;
 
+
+module.exports.getAllStores = (req, res) => {
+  StoreModel.find((err, docs) => {
+    if (!err) res.send(docs);
+    else console.log('Error to get data : ' + err);
+  }).sort({ createdAt: -1 });
+};
+
 module.exports.getStoreCollections = async (req, res) => {
   const { ids } = req.body;
 
@@ -50,6 +58,7 @@ module.exports.updateStore = async (req, res) => {
       console.log('is empty');
       res.status(500).json({ message: 'no changes provided !' });
     } else {
+      
       const updatedStore = await StoreModel.findByIdAndUpdate(
         req.params.id,
         {

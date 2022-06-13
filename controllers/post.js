@@ -188,13 +188,13 @@ module.exports.multipleUpload = async (req, res) => {
     });
 
     const selectedId = req.params.id;
-    const { pairing } = await PostModel.findById(req.params.id);
-    console.log('paring', pairing);
+    const { pairings } = await PostModel.findById(req.params.id);
+    console.log('paring', pairings);
 
     PostModel.findOneAndUpdate(
       { _id: selectedId },
       {
-        pairing: [...pairing, ...result],
+        pairings: [...pairings, ...result],
       },
       { new: true, upsert: true }
     )
@@ -226,27 +226,28 @@ module.exports.deleteOnePairing = async (req, res) => {
   const removeId = req.body.removeId;
   console.log('removeId', removeId);
 
-  const { pairing } = await PostModel.findById(selectedId);
-  console.log('Pairing', pairing);
+  const { pairings } = await PostModel.findById(selectedId);
+  
+  console.log('winePairings from selected wineid', pairing);
 
-  if (!pairing) {
+  if (!pairings) {
     return res.status(404).json({ message: 'img doesn t exist' });
   }
 
-  try {
-    await PostModel.updateMany(
-      { _id: selectedId },
-      { $pull: { pairing: { _id: ObjectID(removeId) } } },
-      { multi: true }
-    ).then((data) => {
-      if (!data) {
-        return res.status(404).send({
-          message: `Cannot update pairings`,
-        });
-      } else res.status(200).send({ message: data });
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ message: 'Too many files to upload.' });
-  }
+  // try {
+  //   await PostModel.updateMany(
+  //     { _id: selectedId },
+  //     { $pull: { pairing: { _id: ObjectID(removeId) } } },
+  //     { multi: true }
+  //   ).then((data) => {
+  //     if (!data) {
+  //       return res.status(404).send({
+  //         message: `Cannot update pairings`,
+  //       });
+  //     } else res.status(200).send({ message: data });
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  //   return res.status(400).json({ message: 'Too many files to upload.' });
+  // }
 };
