@@ -94,3 +94,4 @@ module.exports.newStore = async (req, res) => {
     res.status(500).json(err);
   }
 };
+

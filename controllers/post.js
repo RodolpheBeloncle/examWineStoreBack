@@ -21,14 +21,12 @@ module.exports.getSelectedWine = async (req, res) => {
   }
 };
 
-
-
 module.exports.updateOneImage = async (req, res) => {
   const selectedId = req.params.id;
   if (!ObjectID.isValid(selectedId)) {
     return res.status(400).send('ID unknown : ' + selectedId);
   }
- 
+
   try {
     PostModel.findOneAndUpdate(
       { _id: selectedId },
@@ -221,33 +219,96 @@ module.exports.multipleUpload = async (req, res) => {
   }
 };
 
+module.exports.insertStore = async (req, res) => {
+  const selectedWineId = req.params.id;
+  const selectedStore = req.body.storeId;
+  console.log('selectedStore', selectedStore);
+
+  const { storeId } = await PostModel.findById(selectedWineId);
+
+  console.log('selectedStore from selected wineid', storeId);
+
+  PostModel.findOneAndUpdate(
+    { _id: selectedWineId },
+    {
+      storeId: [...selectedStore],
+    },
+    { new: true, upsert: true }
+  )
+    .then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          message: `Cannot update selectedwine`,
+        });
+      } else res.status(200).send({ message: data });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err,
+      });
+    });
+};
+
 module.exports.deleteOnePairing = async (req, res) => {
   const selectedId = req.params.id;
   const removeId = req.body.removeId;
   console.log('removeId', removeId);
 
   const { pairings } = await PostModel.findById(selectedId);
-  
-  console.log('winePairings from selected wineid', pairing);
+
+  console.log('winePairings from selected wineid', pairings);
 
   if (!pairings) {
     return res.status(404).json({ message: 'img doesn t exist' });
   }
 
-  // try {
-  //   await PostModel.updateMany(
-  //     { _id: selectedId },
-  //     { $pull: { pairing: { _id: ObjectID(removeId) } } },
-  //     { multi: true }
-  //   ).then((data) => {
-  //     if (!data) {
-  //       return res.status(404).send({
-  //         message: `Cannot update pairings`,
-  //       });
-  //     } else res.status(200).send({ message: data });
-  //   });
-  // } catch (error) {
-  //   console.log(error);
-  //   return res.status(400).json({ message: 'Too many files to upload.' });
-  // }
+  try {
+    await PostModel.findOneAndUpdate(
+      { _id: selectedId },
+      { $pull: { pairings: { _id: ObjectID(removeId) } } },
+      { multi: true }
+    ).then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          message: `Cannot update pairings`,
+        });
+      } else res.status(200).send({ message: data });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: 'Too many files to upload.' });
+  }
+};
+
+module.exports.removeOneStore = async (req, res) => {
+  const selectedId = req.params.id;
+  const removeStoreId = req.body.removeStoreId;
+  console.log('removeStoreId from storeList', removeStoreId);
+
+  const { storeId } = await PostModel.findById(selectedId);
+
+  console.log('storeId list', storeId);
+
+  if (!storeId) {
+    return res.status(404).json({ message: "storeId doesn't exist" });
+  }
+
+  let filteredStoreList = storeId.filter((id) => !removeStoreId.includes(id));
+
+  try {
+    await PostModel.updateMany(
+      { _id: selectedId },
+      { storeId: [...filteredStoreList] },
+      { new: true, upsert: true }
+    ).then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          message: `Cannot update storeId`,
+        });
+      } else res.status(200).send({ message: data });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error });
+  }
 };

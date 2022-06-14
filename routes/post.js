@@ -47,9 +47,17 @@ router.post(
   postController.updateOneImage
 );
 
+// UPDATE WINE IMAGE
+router.post(
+  '/insertStore/:id',
+  postController.insertStore
+);
+
 // DELETE SELECTED IMAGE
 
 router.post('/deletepairing/:id', postController.deleteOnePairing);
+
+router.post('/removeStore/:id', postController.removeOneStore);
 
 //INCREASE wine stock
 router.post('/increase/:id', requireAuth, postController.increaseAmount);
