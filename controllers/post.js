@@ -294,11 +294,12 @@ module.exports.removeOneStore = async (req, res) => {
   }
 
   let filteredStoreList = storeId.filter((id) => !removeStoreId.includes(id));
+  console.log("filteredStoreList",filteredStoreList)
 
   try {
     await PostModel.updateMany(
       { _id: selectedId },
-      { storeId: [...filteredStoreList] },
+      { storeId: filteredStoreList },
       { new: true, upsert: true }
     ).then((data) => {
       if (!data) {
