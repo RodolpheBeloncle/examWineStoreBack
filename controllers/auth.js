@@ -58,8 +58,12 @@ module.exports.login = async (req, res) => {
       { expiresIn: '3d' }
     );
 
+    const { username, profilPic } = user;
+
     res.status(200).cookie('jwt', accessToken).json({
-      credential: accessToken,
+      credential: user._id,
+      username: username,
+      profilPic: profilPic,
       message: 'Successfully logged in 😏 🍀',
     });
   } catch (err) {
@@ -69,7 +73,11 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.logout = (req, res) => {
-  res.clearCookie('jwt').status(200).json({
-    message: 'Successfully loggout 😏 🍀',
-  });
+  // res.clearCookie('jwt').status(200).json({
+  //   message: 'Successfully loggout 😏 🍀',
+  // });
+  let { currentUser } = req.body;
+  currentUser = false;
+  console.log('logout', req.body);
+  res.clearCookie('access_token').status(200).json(currentUser);
 };

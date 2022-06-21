@@ -9,9 +9,8 @@ const wineSchema = new mongoose.Schema(
     typeOfWine: { type: String, default: 'NC' },
     price: { type: String, default: 'NC' },
     stock: { type: Number, default: 0 },
-    image: { type: String, default: 'No Provided' },
+    image: { type: String, default: 'No Provided Image' },
     pairings:{ type: Array,default:[] },
-    storeIndex: { type: Array,default: [] },
     storeId: { type: Array,default: [] },
   },
   { timestamps: true }
