@@ -36,7 +36,7 @@ module.exports.login = async (req, res) => {
     const user = await UserModel.findOne({ email: email });
 
     if (!user) {
-      return res.status(403).json({
+     return res.status(403).json({
         message: 'bad user or password',
       });
     }
@@ -44,7 +44,7 @@ module.exports.login = async (req, res) => {
     const verified = await argon2.verify(user.password, password);
 
     if (!verified) {
-      res.status(403).json({
+      return res.status(403).json({
         message: 'bad user or password',
       });
     }
@@ -60,24 +60,19 @@ module.exports.login = async (req, res) => {
 
     const { username, profilPic } = user;
 
-    res.status(200).cookie('jwt', accessToken).json({
+    return res.status(200).cookie('jwt', accessToken).json({
+      currentUser: true,
       credential: user._id,
       username: username,
       profilPic: profilPic,
-      message: 'Successfully logged in 😏 🍀',
     });
   } catch (err) {
-    const errors = await loginErrors(err);
-    res.status(401).json({ message: errors });
+    return res.status(401).json({ message: err });
   }
 };
 
 module.exports.logout = (req, res) => {
-  // res.clearCookie('jwt').status(200).json({
-  //   message: 'Successfully loggout 😏 🍀',
-  // });
   let { currentUser } = req.body;
   currentUser = false;
-  console.log('logout', req.body);
-  res.clearCookie('access_token').status(200).json(currentUser);
+  res.clearCookie('jwt').status(200).json(currentUser);
 };

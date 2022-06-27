@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
@@ -10,6 +9,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
 const storeRoutes = require('./routes/store');
+const userRoutes = require('./routes/user');
 
 const port = process.env.PORT || 8000;
 const corsOptions = {
@@ -20,7 +20,7 @@ const corsOptions = {
 // Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 mongoose
@@ -36,6 +36,7 @@ mongoose
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/store', storeRoutes);
+app.use('/api/user', userRoutes);
 
 app.use('/uploads', express.static('uploads'));
 // serving static files

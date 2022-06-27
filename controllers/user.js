@@ -1,51 +1,46 @@
-const UserModel = require("../models/user.model");
-const ObjectID = require("mongoose").Types.ObjectId;
+const UserModel = require('../models/user');
+const ObjectID = require('mongoose').Types.ObjectId;
 
 module.exports.getAllUsers = async (req, res) => {
-  const users = await UserModel.find().select("-password");
+  const users = await UserModel.find().select('-password');
   res.status(200).json(users);
 };
 
-module.exports.userInfo = (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("ID unknown : " + req.params.id);
-
-  UserModel.findById(req.params.id, (err, docs) => {
-    if (!err) res.send(docs);
-    else console.log("ID unknown : " + err);
-  }).select("-password");
-};
-
-module.exports.updateUser = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("ID unknown : " + req.params.id);
+module.exports.updateProfil = async (req, res) => {
+  const selectedId = req.params.id;
+  if (!ObjectID.isValid(selectedId)) {
+    res.status(400).send('ID unknown : ' + selectedId);
+  }
 
   try {
-    await UserModel.findOneAndUpdate(
-      { _id: req.params.id },
+    const updatedProfil = await UserModel.findOneAndUpdate(
+      { _id: selectedId },
       {
-        $set: {
-          bio: req.body.bio,
-        },
+        profilPic: req.file.path,
+        username: req.body.username,
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
-      (err, docs) => {
-        if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
-      }
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     );
-  } catch (err) {
-    return res.status(500).json({ message: err });
+    const { profilPic, username } = updatedProfil;
+    res.status(200).json({ profilPic, username });
+  } catch (error) {
+    console.log(error);
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+      res.status(400).json({ message: 'Too many files to upload.' });
+    }
+    res
+      .status(400)
+      .json({ message: `Error when trying upload many files: ${error}` });
   }
 };
 
 module.exports.deleteUser = async (req, res) => {
   if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send("ID unknown : " + req.params.id);
+    return res.status(400).send('ID unknown : ' + req.params.id);
 
   try {
     await UserModel.remove({ _id: req.params.id }).exec();
-    res.status(200).json({ message: "Successfully deleted. " });
+    res.status(200).json({ message: 'Successfully deleted. ' });
   } catch (err) {
     return res.status(500).json({ message: err });
   }
@@ -56,7 +51,7 @@ module.exports.follow = async (req, res) => {
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToFollow)
   )
-    return res.status(400).send("ID unknown : " + req.params.id);
+    return res.status(400).send('ID unknown : ' + req.params.id);
 
   try {
     // add to the follower list
@@ -89,7 +84,7 @@ module.exports.unfollow = async (req, res) => {
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToUnfollow)
   )
-    return res.status(400).send("ID unknown : " + req.params.id);
+    return res.status(400).send('ID unknown : ' + req.params.id);
 
   try {
     await UserModel.findByIdAndUpdate(
